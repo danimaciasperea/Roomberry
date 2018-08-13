@@ -1,0 +1,575 @@
+@media (min-width: 992px) {
+	.col-xs-6.gauge-top-left {
+		/*42,5px TOP + 40px NAVBAR + 5px EXTRA*/
+		/*42,5px BOTTOM*/
+		padding-top: 92.5px;
+		padding-bottom: 42.5px;
+		}
+		
+	.col-xs-6.gauge-top-right {
+		/*42,5px TOP + 40px NAVBAR + 5px EXTRA*/
+		/*42,5px BOTTOM*/
+		padding-top: 92.5px;
+		padding-bottom: 42.5px;
+		}
+		
+	.col-xs-6.gauge-left {
+		/*42,5px TOP*/
+		/*42,5px BOTTOM*/
+		padding-top: 42.5px;
+		padding-bottom: 42.5px;
+		}
+		
+	.col-xs-6.gauge-right {
+		/*42,5px TOP*/
+		/*42,5px BOTTOM*/
+		padding-top: 42.5px;
+		padding-bottom: 42.5px;
+		}
+	
+	.col-xs-6.gauge-bottom-left {
+		/*42,5px TOP*/
+		/*42,5px BOTTOM*/
+		padding-top: 42.5px;
+		padding-bottom: 62.5px;
+		}
+		
+	.col-xs-6.gauge-bottom-right {
+		/*42,5px TOP*/
+		/*42,5px BOTTOM*/
+		padding-top: 42.5px;
+		padding-bottom: 62.5px;
+		}
+}
+
+.col-xs-6 input {
+		width: 85px;
+		margin-top: 5px;
+		padding-left: 5px;
+		padding-right: 1px;		
+		text-align: left;
+}
+
+.col-xs-8 select {
+		width: 123px;
+		margin-top: 4px;
+		padding-top: 1px;
+		height: 26px;
+		padding-bottom: 1px;
+		padding-left: 1px;
+		padding-right: 1px;		
+		text-align: left;
+}
+
+.col-xs-6 select {
+		width: 85px;
+		margin-top: 4px;
+		padding-top: 1px;
+		height: 26px;
+		padding-bottom: 1px;
+		padding-left: 1px;
+		padding-right: 1px;		
+		text-align: left;
+} 
+
+.col-xs-4 select {
+		width: 55px;
+		margin-top: 4px;
+		padding-top: 1px;
+		height: 26px;
+		padding-bottom: 1px;
+		padding-left: 1px;
+		padding-right: 1px;		
+		text-align: center;
+} 
+
+.col-xs-5 select {
+		width: 55px;
+		margin-top: 4px;
+		padding-top: 1px;
+		height: 26px;
+		padding-bottom: 1px;
+		padding-left: 1px;
+		padding-right: 1px;		
+		text-align: center;
+} 
+
+.calduinoInputs {
+	border-width: 2px;
+	border-style: solid;
+	border-color:#ffffff;
+}
+
+.col-md-6.graph {
+	padding-top: 15px;
+	padding-bottom: 15px;
+}
+
+.no-padding {
+   padding: 0 !important;
+}
+
+footer {
+    padding-bottom: 20px;
+} 
+
+div.history * * * th {
+	text-align: center;
+}
+
+div.history * * * td {
+	text-align: center;
+}
+
+td.data {
+	text-align: right;
+}
+
+select:disabled {
+    background-color: rgb(235, 235, 228);
+    color: rgb(84,84,84);
+}
+
+
+
+.range {
+    display: table;
+    position: relative;
+    height: 25px;
+    background-color: rgb(245, 245, 245);
+    border-radius: 4px;
+    -webkit-box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
+    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+}
+
+.range input[type="range"] {
+    -webkit-appearance: none !important;
+    -moz-appearance: none !important;
+    -ms-appearance: none !important;
+    -o-appearance: none !important;
+    appearance: none !important;
+
+    display: table-cell;
+    width: 100%;
+    background-color: transparent;
+    height: 25px;
+    cursor: pointer;
+}
+.range input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none !important;
+    -moz-appearance: none !important;
+    -ms-appearance: none !important;
+    -o-appearance: none !important;
+    appearance: none !important;
+
+    width: 11px;
+    height: 25px;
+    color: rgb(255, 255, 255);
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: baseline;
+    border-radius: 0px;
+    background-color: rgb(153, 153, 153);
+}
+
+.range input[type="range"]::-moz-slider-thumb {
+    -webkit-appearance: none !important;
+    -moz-appearance: none !important;
+    -ms-appearance: none !important;
+    -o-appearance: none !important;
+    appearance: none !important;
+    
+    width: 11px;
+    height: 25px;
+    color: rgb(255, 255, 255);
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: baseline;
+    border-radius: 0px;
+    background-color: rgb(153, 153, 153);
+}
+
+.range output {
+    display: table-cell;
+    padding: 3px 5px 2px;
+    min-width: 40px;
+    color: rgb(255, 255, 255);
+    background-color: rgb(153, 153, 153);
+    text-align: center;
+    text-decoration: none;
+    border-radius: 4px;
+    border-bottom-left-radius: 0;
+    border-top-left-radius: 0;
+    width: 1%;
+    white-space: nowrap;
+    vertical-align: middle;
+
+    -webkit-transition: all 0.5s ease;
+    -moz-transition: all 0.5s ease;
+    -o-transition: all 0.5s ease;
+    -ms-transition: all 0.5s ease;
+    transition: all 0.5s ease;
+
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: -moz-none;
+    -o-user-select: none;
+    user-select: none;
+}
+.range input[type="range"] {
+    outline: none;
+}
+
+.range.range-primary input[type="range"]::-webkit-slider-thumb {
+    background-color: rgb(66, 139, 202);
+}
+.range.range-primary input[type="range"]::-moz-slider-thumb {
+    background-color: rgb(66, 139, 202);
+}
+.range.range-primary output {
+    background-color: rgb(66, 139, 202);
+}
+.range.range-primary input[type="range"] {
+    outline-color: rgb(66, 139, 202);
+}
+
+.range.range-success input[type="range"]::-webkit-slider-thumb {
+    background-color: rgb(92, 184, 92);
+}
+.range.range-success input[type="range"]::-moz-slider-thumb {
+    background-color: rgb(92, 184, 92);
+}
+.range.range-success output {
+    background-color: rgb(92, 184, 92);
+}
+.range.range-success input[type="range"] {
+    outline-color: rgb(92, 184, 92);
+}
+
+.range.range-info input[type="range"]::-webkit-slider-thumb {
+    background-color: rgb(91, 192, 222);
+}
+.range.range-info input[type="range"]::-moz-slider-thumb {
+    background-color: rgb(91, 192, 222);
+}
+.range.range-info output {
+    background-color: rgb(91, 192, 222);
+}
+.range.range-info input[type="range"] {
+    outline-color: rgb(91, 192, 222);
+}
+
+.range.range-warning input[type="range"]::-webkit-slider-thumb {
+    background-color: rgb(240, 173, 78);
+}
+.range.range-warning input[type="range"]::-moz-slider-thumb {
+    background-color: rgb(240, 173, 78);
+}
+.range.range-warning output {
+    background-color: rgb(240, 173, 78);
+}
+.range.range-warning input[type="range"] {
+    outline-color: rgb(240, 173, 78);
+}
+
+.range.range-danger input[type="range"]::-webkit-slider-thumb {
+    background-color: rgb(217, 83, 79);
+}
+.range.range-danger input[type="range"]::-moz-slider-thumb {
+    background-color: rgb(217, 83, 79);
+}
+.range.range-danger output {
+    background-color: rgb(217, 83, 79);
+}
+.range.range-danger input[type="range"] {
+    outline-color: rgb(217, 83, 79);
+}
+
+
+.tree, .tree ul {
+    margin:0;
+    padding:0;
+    list-style:none
+}
+.tree ul {
+    margin-left:1em;
+    position:relative
+}
+.tree ul ul {
+    margin-left:.5em
+}
+.tree ul:before {
+    content:"";
+    display:block;
+    width:0;
+    position:absolute;
+    top:0;
+    bottom:0;
+    left:0;
+    border-left:1px solid
+}
+.tree li {
+    margin:0;
+    padding:0 1em;
+    line-height:2em;
+    color:#369;
+    font-weight:700;
+    position:relative
+}
+.tree ul li:before {
+    content:"";
+    display:block;
+    width:10px;
+    height:0;
+    border-top:1px solid;
+    margin-top:-1px;
+    position:absolute;
+    top:1em;
+    left:0
+}
+.tree ul li:last-child:before {
+    background:#fff;
+    height:auto;
+    top:1em;
+    bottom:0
+}
+.indicator {
+    margin-right:5px;
+}
+.tree li a {
+    text-decoration: none;
+    color:#369;	
+	margin-left: 5px
+}
+
+.tree li i {
+    text-decoration: none;
+	//margin-right: 5px;
+	//margin-left: 5px; 
+    color:#369;
+}
+
+.tree li {
+    margin:0;
+    padding:0 1em;
+    line-height:2em;
+    color:#369;
+    font-weight:700;
+    position:relative
+}
+
+.tree li button, .tree li button:active, .tree li button:focus {
+    text-decoration: none; 
+    color:#369;
+    border:none;
+    background:transparent;
+    margin:0px 0px 0px 0px;
+    padding:0px 0px 0px 0px;
+    outline: 0;
+}
+ 
+.glyphicon-refresh-animate {
+    -animation: spin .7s infinite linear;
+    -webkit-animation: spin2 .7s infinite linear;
+	//margin-right: 10px;
+}
+
+@-webkit-keyframes spin2 {
+    from { -webkit-transform: rotate(0deg);}
+    to { -webkit-transform: rotate(360deg);}
+}
+
+@keyframes spin {
+    from { transform: scale(1) rotate(0deg);}
+    to { transform: scale(1) rotate(360deg);}
+}
+
+/* Next & previous buttons */
+.prev,
+.next {
+  cursor: pointer;
+  position: absolute;
+  top: 50%;
+  width: auto;
+  padding: 16px;
+  margin-top: -50px;
+  color: white;
+  font-weight: bold;
+  font-size: 20px;
+  transition: 0.6s ease;
+  border-radius: 0 3px 3px 0;
+  user-select: none;
+  -webkit-user-select: none;
+  text-decoration:none !important;
+}
+  
+.next {
+  right: 15px;
+  border-radius: 3px 0 0 3px;
+}
+
+/* On hover, add a black background color with a little bit see-through */
+.prev:hover,
+.next:hover {
+  background-color: rgba(0, 0, 0, 0.8);
+  color: white;
+}
+
+@media only screen and (max-width: 768px) {
+	.multimediaLoader {
+		height:45vw;	
+	}
+}
+
+@media screen and (min-width: 768px) {
+	.multimediaLoader {
+		height:643px;
+	}
+}
+
+.table-fixed thead {
+  width: 100%;
+}
+.table-fixed tbody {
+  height: 150px;
+  overflow-y: auto;
+  width: 100%;
+}
+.table-fixed thead, .table-fixed tbody, .table-fixed tr, .table-fixed td, .table-fixed th {
+  display: block;
+}
+
+.table-fixed tbody td, .table-fixed thead > tr > th {
+  border-bottom-width: 0;
+}
+
+.table-hover > tbody > tr:hover > td[class*=col-] {
+	background-color: #f5f5f5;
+}
+
+@media screen and (min-width: 768px) { 
+	.table-fixed td[class*=col-], .table-fixed th[class*=col-] {
+	float: left;
+	}
+}
+
+.tooltip-inner {
+    /*max-width: 400px;*/
+    /* If max-width does not work, try using width instead */
+    /*width: 100px;*/
+	max-width: 500px !important;
+	text-align: left !important;
+}
+
+.rotate-90 {
+  filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=1);
+  -webkit-transform: rotate(90deg);
+  -moz-transform: rotate(90deg);
+  -ms-transform: rotate(90deg);
+  -o-transform: rotate(90deg);
+  transform: rotate(90deg);
+}
+
+.rotate-180 {
+  filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=2);
+  -webkit-transform: rotate(180deg);
+  -moz-transform: rotate(180deg);
+  -ms-transform: rotate(180deg);
+  -o-transform: rotate(180deg);
+  transform: rotate(180deg);
+}
+
+.rotate-270 {
+  filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=3);
+  -webkit-transform: rotate(270deg);
+  -moz-transform: rotate(270deg);
+  -ms-transform: rotate(270deg);
+  -o-transform: rotate(270deg);
+  transform: rotate(270deg);
+}
+
+.flip-horizontal {
+  filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=0, mirror=1);
+  -webkit-transform: scale(-1, 1);
+  -moz-transform: scale(-1, 1);
+  -ms-transform: scale(-1, 1);
+  -o-transform: scale(-1, 1);
+  transform: scale(-1, 1);
+}
+.flip-vertical {
+  filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=2, mirror=1);
+  -webkit-transform: scale(1, -1);
+  -moz-transform: scale(1, -1);
+  -ms-transform: scale(1, -1);
+  -o-transform: scale(1, -1);
+  transform: scale(1, -1);
+}
+
+.disabledbutton {
+    pointer-events: none;
+    opacity: 0.4;
+}
+.roomba-output.row { 
+	margin-bottom:5px;
+}
+
+.roomba-output output {
+    padding-bottom: 0px !important;
+	padding-top: 0px !important;
+	background-color: rgba(144, 144, 144, 0.2);
+	display: table-cell;
+    padding: 3px 5px 2px 5px;
+    min-width: 40px;
+    text-align: center;
+    text-decoration: none;
+    border-radius: 4px;
+    border-bottom-left-radius: 0;
+    border-top-left-radius: 0;
+    width: 1%;
+    white-space: nowrap;
+    vertical-align: middle;
+}
+
+.roomba-output h5 {
+    margin-bottom: 3px !important;
+	margin-top: 2px !important;
+}
+
+.bootstrap-touchspin .input-group-btn-vertical {
+  position: absolute;
+  right: 0;
+  height: 100%;
+  z-index: 11;
+}
+
+.bootstrap-touchspin .input-group-btn-vertical > .btn {
+  position: absolute;
+  right: 0;
+  height: 50%;
+  padding: 0;
+  width: 2em;
+  text-align: center;
+  line-height: 1;
+}
+
+.bootstrap-touchspin .input-group-btn-vertical .bootstrap-touchspin-up {
+  border-radius: 0 4px 0 0;
+  top: 0;
+}
+
+.bootstrap-touchspin .input-group-btn-vertical .bootstrap-touchspin-down {
+  border-radius: 0 0 4px 0;
+  bottom: 0;
+}
+
+.spinner-output {
+  padding-top: 6px !important;
+  padding-left: 6px !important;
+  padding-right: 30px !important;
+  padding-bottom: 6px !important;
+}
+
+.btn-round {
+    border-radius: 50% !important;;
+}

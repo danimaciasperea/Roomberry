@@ -1,0 +1,832 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="icon" type="image/png" sizes="32x32" href="../icons/favicon-32x32.png">
+	<link rel="icon" type="image/png" sizes="16x16" href="../icons/favicon-16x16.png">
+	
+    <!-- Bootstrap and Custom CSS-->
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ekko-lightbox/5.2.0/ekko-lightbox.css" integrity="sha256-rsCgM5jt7IFLYMFFsDe3ZDSnL1fX0IKF5DOQP9q11kQ=" crossorigin="anonymous" />
+	<link href="cs/custom.css" rel="stylesheet">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-switch/3.3.4/css/bootstrap2/bootstrap-switch.min.css" integrity="sha256-om6WdVA9jl2Y5FpRyiHQWboI3PRXcY9SDh9UuYOxRtA=" crossorigin="anonymous" />
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-colorpicker/2.5.1/css/bootstrap-colorpicker.min.css" integrity="sha256-WiW45+2MJLXlf9nO+kdeRR8mV+OUBMF6VwS/4/IX2Fc=" crossorigin="anonymous" />
+	
+    <title>El Tiempo en M&#252;nster</title>
+
+  </head>
+
+  <body>		
+    <!-- Main container -->	
+	<div class="container fluid">
+		<div class="row" style="margin-top:20px">
+			<div class="col-md-8">
+				<div class="row">
+					<div class="col-md-12" style="margin-bottom: 20px">
+						<a id="snapshotA" href="" data-toggle="lightbox" data-title="">
+							<img width="1280px" height="720px" class="img-responsive center-block" id="snapshot" style="maxWidth:100%;">
+						</a>
+					</div>
+					<div class="col-md-6" style="margin-bottom: 20px">
+					  <div class="panel panel-default">
+						<div class="panel-body">
+							<div class="row" style="padding-top: 10px;padding-left: 10px;margin-bottom: 10px;">
+								<div class="col-xs-5 no-padding">
+									<button type="button" id="imageConfigurationButton" data-toggle="collapse" data-target="#imageConfiguration" class="btn btn-warning" style="">Configuraci&#243;n</button>
+								</div>
+								<div class="col-xs-7 no-padding pull-right">
+									<div class="col-xs-5 no-padding" data-toggle="tooltip" title="Tasa de refresco de imagen">
+										<h5>Refrescar</h5>							
+									</div>
+									<div class="col-xs-3 no-padding">
+										<input id="refreshSnapshotRateInput" type="number" name="quantity" min="0.1" max="30" step="0.1" value="2.0" style=" Width: 45Px; margin-top: 5px; text-align: center;" onchange="updateRefreshRateSnapshot(this)">
+									</div>
+									<div class="col-xs-4" >
+										<button type="button" id="refreshSnapshotButton" class="btn btn-success glyphicon glyphicon-play pull-right" style="width: 38px;height: 34px;" onclick="toogleRefreshSnapshotButton()"></button>
+									</div>
+								</div>
+							</div>
+							<div id="imageConfiguration" class="collapse">
+								<div class="row" style="margin-bottom: 10px;">
+									<div class="col-xs-12">	
+										<div class="col-xs-3 no-padding">	
+											<h5 style="margin-top: 7px; margin-bottom: 0px;">Brillo</h5>
+										</div>
+										<div class="col-xs-9 no-padding">
+											<div class="range range-primary">
+												<input type="range" id="brightness_input" name="brightnessInput" min="0" max="100" value="50" oninput="brightness_output.value=value" onchange="setCamAttr(this)">
+												<output id="brightness_output">50</output>
+											</div>
+										</div>
+									</div>
+								</div> 
+								<div class="row" style="margin-bottom: 10px;">
+									<div class="col-xs-12">	
+										<div class="col-xs-3 no-padding">	
+											<h5 style="margin-top: 7px; margin-bottom: 0px;">Saturaci&#243;n</h5>
+										</div>
+										<div class="col-xs-9 no-padding">
+											<div class="range range-primary">
+												<input type="range" id= "saturation_input" name="saturationInput" min="-100" max="100" value="0" oninput="saturation_output.value=value" onchange="setCamAttr(this)">
+												<output id="saturation_output">0</output>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="row" style="margin-bottom: 10px;">
+									<div class="col-xs-12">	
+										<div class="col-xs-3 no-padding">	
+											<h5 style="margin-top: 7px; margin-bottom: 0px;">Contraste</h5>
+										</div>
+										<div class="col-xs-9 no-padding">
+											<div class="range range-primary">
+												<input type="range" id="contrast_input" name="contrastInput" min="-100" max="100" value="0" oninput="contrast_output.value=value" onchange="setCamAttr(this)">
+												<output id="contrast_output">0</output>
+											</div>
+										</div>
+									</div>
+								</div>						
+								<div class="row" style="margin-bottom: 10px;">
+									<div class="col-xs-12">	
+										<div class="col-xs-3 no-padding">	
+											<h5 style="margin-top: 7px; margin-bottom: 0px;">Nitidez</h5>
+										</div>
+										<div class="col-xs-9 no-padding">
+											<div class="range range-primary">
+												<input type="range" id="sharpness_input" name="sharpnessInput" min="-100" max="100" value="0" oninput="sharpness_output.value=value" onchange="setCamAttr(this)">
+												<output id="sharpness_output">0</output>
+											</div>
+										</div>
+									</div>
+								</div>	
+								<div class="row" style="margin-bottom: 10px;">
+									<div class="col-xs-12">	
+										<div class="col-xs-3 no-padding">	
+											<h5 style="margin-top: 7px; margin-bottom: 0px;">ISO</h5>
+										</div>
+										<div class="col-xs-9 no-padding">
+											<div class="range range-primary">
+												<input type="range" id="iso_input" name="sharpnessInput" min="0" max="800" value="0" oninput="iso_output.value=value" onchange="setCamAttr(this)">
+												<output id="iso_output">0</output>
+											</div>
+										</div>
+									</div>
+								</div>	
+								<div class="row" style="margin-bottom: 10px;">
+									<div class="col-xs-12">	
+										<div class="col-xs-3 no-padding" data-toggle="tooltip" title="Compensaci&#243;n exposici&#243;n">	
+											<h5 style="margin-top: 7px; margin-bottom: 0px;">Comp. Exp.</h5>
+										</div>
+										<div class="col-xs-9 no-padding">
+											<div class="range range-primary">
+												<input type="range" id="exposure_compensation_input" name="range" min="-25" max="25" value="0" oninput="exposure_compensation_output.value=value" onchange="setCamAttr(this)">
+												<output id="exposure_compensation_output">0</output>
+											</div>
+										</div>
+									</div>
+								</div>	
+								<hr>
+								<div class="row" style="margin-bottom: 10px;">
+									<div class="col-xs-6">	
+										<div class="col-xs-4 no-padding" data-toggle="tooltip" title="Estabilizaci&#243;n v&#237;deo">	
+											<h5 style="margin-top: 10px; margin-bottom: 0px;">Estab.</h5>
+										</div>
+										<div class="col-xs-8"> 
+											<select id="video_stabilization" onchange="setCamAttr(this)">
+												<option selected value="True">S&#237;</option>
+												<option value="False">No</option>
+											</select>
+										</div>
+									</div>
+								</div>
+								<div class="row" style="margin-bottom: 10px;">
+									<div class="col-xs-6">	
+										<div class="col-xs-4 no-padding" data-toggle="tooltip" title="Limpieza ruido imagen">	
+											<h5 style="margin-top: 10px; margin-bottom: 0px;">Lim. I.</h5>
+										</div>
+										<div class="col-xs-8"> 
+											<select id="image_denoise" onchange="setCamAttr(this)"> 
+												<option selected value="True">S&#237;</option>
+												<option value="False">No</option>
+											</select>
+										</div>
+									</div>
+									<div class="col-xs-6">	
+										<div class="col-xs-4 no-padding" data-toggle="tooltip" title="Limpieza ruido v&#237;deo">	
+											<h5 style="margin-top: 10px; margin-bottom: 0px;">Lim. V.</h5>
+										</div>
+										<div class="col-xs-8"> 
+											<select id="video_denoise" onchange="setCamAttr(this)">
+												<option selected value="True">S&#237;</option>
+												<option value="False">No</option>
+											</select>
+										</div>
+									</div>
+								</div>
+								<div class="row" style="margin-bottom: 10px;">
+									<div class="col-xs-6">	
+										<div class="col-xs-4 no-padding" data-toggle="tooltip" title="Balance de blancos">	
+											<h5 style="margin-top: 10px; margin-bottom: 0px;">Blancos</h5>
+										</div>
+										<div class="col-xs-8"> 
+											<select id="awb_mode" onchange="setCamAttr(this)">
+												<option value="horizon">Horizonte</option>
+												<option value="flash">Flash</option>
+												<option value="incandescent">Incandescente</option>
+												<option value="fluorescent">Fluorescente</option>
+												<option value="tungsten">Tungsteno</option>
+												<option value="shade">Sombra</option>
+												<option value="cloudy">Nubes</option>
+												<option value="sunlight">Luz sol</option>
+												<option selected value="auto">Auto</option>
+												<option value="off">Off</option>
+											</select>
+										</div>
+									</div>
+									<div class="col-xs-6">	
+										<div class="col-xs-4 no-padding" data-toggle="tooltip" title="Efecto imagen">	
+											<h5 style="margin-top: 10px; margin-bottom: 0px;">Efecto</h5>
+										</div>
+										<div class="col-xs-8"> 
+											<select id="image_effect" onchange="setCamAttr(this)">
+												<option value="deinterlace2">Deinterlace2</option>
+												<option value="deinterlace1">Deinterlace1</option>
+												<option value="cartoon">Cartoon</option>
+												<option value="colorbalance">Balance Colores</option>
+												<option value="colorpoint">Punto color</option>
+												<option value="posterise">Posterizar</option>
+												<option value="washedout">Washedout</option>
+												<option value="colorswap">Colorswap</option>
+												<option value="saturation">Saturaci&#243;n</option>
+												<option value="blur">Blur</option>
+												<option value="film">Film</option>
+												<option value="watercolor">Acuarela</option>
+												<option value="pastel">Pastel</option>
+												<option value="gpen">Gpen</option>
+												<option value="hatch">Hatch</option>
+												<option value="oilpaint">&#211;leo</option>
+												<option value="emboss">Papel</option>
+												<option value="denoise">Denoise</option>
+												<option value="sketch">Bozeto</option>
+												<option value="solarize">Solarizar</option>
+												<option value="negative">Negativizar</option>
+												<option selected value="none">No</option>
+											</select>
+										</div>
+									</div>
+								</div>
+								<div class="row" style="margin-bottom: 10px;">
+									<div class="col-xs-6">	
+										<div class="col-xs-4 no-padding" data-toggle="tooltip" title="Rango Din&#225;mico">	
+											<h5 style="margin-top: 10px; margin-bottom: 0px;">Rango</h5>
+										</div>
+										<div class="col-xs-8"> 
+											<select id="drc_strength" onchange="setCamAttr(this)">
+												<option value="high">Alto</option>
+												<option value="medium">Medio</option>
+												<option value="low">Bajo</option>
+												<option selected value="off">No</option>
+											</select>
+										</div>
+									</div>
+									<div class="col-xs-6">	
+										<div class="col-xs-4 no-padding" data-toggle="tooltip" title="Modo Exposici&#243;n">	
+											<h5 style="margin-top: 10px; margin-bottom: 0px;">Modo</h5>
+										</div>
+										<div class="col-xs-8"> 
+											<select id="exposure_mode" onchange="setCamAttr(this)">
+												<option value="fireworks">Fireworks</option>
+												<option value="antishake">Antishake</option>
+												<option value="fixedfps">Fixedfps</option>
+												<option value="verylong">Very long</option>
+												<option value="beach">Beach</option>
+												<option value="snow">Snow</option>
+												<option value="sports">Sports</option>
+												<option value="spotlight">Spotlight</option>
+												<option value="backlight">Backlight</option>
+												<option value="nightpreview">Night preview</option>
+												<option value="night">Noche</option>
+												<option selected value="auto">Auto</option>
+												<option value="off">No</option>
+											</select>
+										</div>
+									</div>
+								</div>
+								<hr>
+								<div class="row" style="margin-bottom: 10px;">
+									<div class="col-xs-6">	
+										<div class="col-xs-4 no-padding" data-toggle="tooltip" title="Rotaci&#243;n">	
+											<h5 style="margin-top: 10px; margin-bottom: 0px;">Rotaci&#243;n</h5>
+										</div>
+										<div class="col-xs-8"> 
+											<select id="rotation" onchange="setCamAttr(this)">
+												<option value="270">270</option>
+												<option value="270">180</option>
+												<option value="90">90</option>
+												<option selected value="0">0</option>
+											</select>
+										</div>
+									</div>
+								</div>
+								<div class="row" style="margin-bottom: 10px;">
+									<div class="col-xs-6">	
+										<div class="col-xs-4 no-padding" data-toggle="tooltip" title="Voltear verticalmente">	
+											<h5 style="margin-top: 10px; margin-bottom: 0px;">Flip V.</h5>
+										</div>
+										<div class="col-xs-8"> 
+											<select id="vflip" onchange="setCamAttr(this)">
+												<option value="True">S&#237;</option>
+												<option selected value="False">No</option>
+											</select>
+										</div>
+									</div>
+									<div class="col-xs-6">	
+										<div class="col-xs-4 no-padding" data-toggle="tooltip" title="Voltear horizontalmente">	
+											<h5 style="margin-top: 10px; margin-bottom: 0px;">Flip H.</h5>
+										</div>
+										<div class="col-xs-8"> 
+											<select id="hflip" onchange="setCamAttr(this)">
+												<option value="True">S&#237;</option>
+												<option selected value="False">No</option>
+											</select>
+										</div>
+									</div>
+								</div>
+								<hr>
+								<div class="row" style="margin-bottom: 10px;">								
+									<div class="col-xs-12">	
+										<div class="col-xs-2 no-padding" data-toggle="tooltip" title="Anotaci&#243;n en capturas">	
+											<h5 style="margin-top: 10px; margin-bottom: 0px;">Texto</h5>
+										</div>
+										<div class="col-xs-10" style="padding-right: 0px;padding-left: 9px;"> 
+											<input id="local-annotate_text" type="text" value="%d-%m-%Y %H:%M:%S" style=" Width: 100%; margin-top: 5px; text-align: center;" onchange="setCamAttr(this)">
+										</div> 
+									</div>
+								</div>
+								<div class="row" style="margin-bottom: 10px;">
+									<div class="col-xs-5">	
+										<div class="col-xs-6 no-padding" data-toggle="tooltip" title="Tama&#241;o anotaci&#243;n">	
+											<h5 style="margin-top: 10px; margin-bottom: 0px;">Tama&#241;o</h5>
+										</div>
+										<div class="col-xs-6" style="padding-left: 5px;">	
+											<input id="annotate_text_size" type="number" min="6" max="160" step="1" value="80" style=" Width: 50Px; margin-top: 5px; text-align: center;" onchange="setCamAttr(this)">
+										</div>
+									</div>									
+									<div class="col-xs-7 no-padding">	
+										<div class="col-xs-3 no-padding" data-toggle="tooltip" title="Color de letra anotaci&#243;n">	
+											<h5 style="margin-top: 10px; margin-bottom: 0px;">Letra</h5>
+										</div>
+										<div class="col-xs-9" style="padding-top: 5px;">
+											<input id="annotate_foreground" type="text" class="form-control input-sm" value=""/>										
+										</div>
+									</div>
+								</div>								
+								<div class="row" style="margin-bottom: 10px;">
+									<div class="col-xs-5">	
+									</div>
+									<div class="col-xs-7 no-padding">	
+										<div class="col-xs-3 no-padding" data-toggle="tooltip" title="Color de fondo anotaci&#243;n">	
+											<h5 style="margin-top: 10px; margin-bottom: 0px;">Fondo</h5>
+										</div>
+										<div class="col-xs-9" style="padding-top: 5px;">
+											<input id="annotate_background" type="text" class="form-control input-sm" value=""/>										
+										</div>
+									</div>
+								</div>									
+								<hr>
+								<div class="row" style="margin-bottom: 10px;">								
+									<div class="col-xs-7" style="padding-right: 0px;">	
+										<div class="col-xs-4 no-padding" data-toggle="tooltip" title="Resoluci&#243;n Snap">	
+											<h5 style="margin-top: 10px; margin-bottom: 0px;">Snap</h5>
+										</div>
+										<div class="col-xs-8 no-padding"> 
+											<input id="local-snap_resolution_width" type="number" min="1" max="1296" step="1" value="1296" style=" Width: 60Px; margin-top: 5px; text-align: center;" onchange="setCamAttr(this)" data-toggle="tooltip" title="Resoluci&#243;n snap horizontal">
+											<input id="local-snap_resolution_height" type="number" min="1" max="972" step="1" value="972" style=" Width: 60Px; margin-top: 5px; text-align: center;" onchange="setCamAttr(this)" data-toggle="tooltip" title="Resoluci&#243;n snap vertical">
+										</div>
+									</div>
+									<div class="col-xs-5">
+										<div class="col-xs-6 no-padding" data-toggle="tooltip" title="Calidad snap">	
+											<h5 style="margin-top: 10px; margin-bottom: 0px;">Calidad</h5>
+										</div>
+										<div class="col-xs-6 no-padding"> 
+											<input id="local-snap_quality" type="number" min="1" max="100" step="1" value="85" style=" Width: 60Px; margin-top: 5px; text-align: center;" onchange="setCamAttr(this)">
+										</div>
+									</div>
+								</div>
+								<div class="row" style="margin-bottom: 10px;">								
+									<div class="col-xs-7" style="padding-right: 0px;">	
+										<div class="col-xs-4 no-padding" data-toggle="tooltip" title="Resoluci&#243;n captura">	
+											<h5 style="margin-top: 10px; margin-bottom: 0px;">Captura</h5>
+										</div>
+										<div class="col-xs-8 no-padding"> 
+											<input id="resolution-width" type="number" min="1" max="2592" step="1" value="2592" style=" Width: 60Px; margin-top: 5px; text-align: center;" onchange="setCamAttr(this)" data-toggle="tooltip" title="Resoluci&#243;n captura horizontal">
+											<input id="resolution-height" type="number" min="1" max="1944" step="1" value="1944" style=" Width: 60Px; margin-top: 5px; text-align: center;" onchange="setCamAttr(this)" data-toggle="tooltip" title="Resoluci&#243;n captura vertical">
+										</div>
+									</div>
+									<div class="col-xs-5">
+										<div class="col-xs-6 no-padding" data-toggle="tooltip" title="Calidad captura">	
+											<h5 style="margin-top: 10px; margin-bottom: 0px;">Calidad</h5>
+										</div>
+										<div class="col-xs-6 no-padding"> 
+											<input id="local-capture_quality" type="number" min="1" max="100" step="1" value="85" style=" Width: 60Px; margin-top: 5px; text-align: center;" onchange="setCamAttr(this)">
+										</div>
+									</div>
+								</div>
+								<div class="row" style="margin-bottom: 20px;">	
+									<div class="col-xs-5">	
+										<div class="col-xs-6 no-padding" data-toggle="tooltip" title="Fotogramas por segundo en captura de v&#237;deo">	
+											<h5 style="margin-top: 10px; margin-bottom: 0px;">Fotogr.</h5>
+										</div>
+										<div class="col-xs-6" style="padding-left: 5px;">
+											<input id="framerate-numerator" type="number" min="1" max="100" step="1" value="30" style=" Width: 60Px; margin-top: 5px; text-align: center;" onchange="setCamAttr(this)">
+										</div>
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-xs-4 text-center">
+										<button type="button" class="btn btn-success text-center" id="default" onclick="setDefaultCamValues()">Defecto</button>
+									</div>
+									<div class="col-xs-4 text-center">
+									</div>
+									<div class="col-xs-4 text-center">
+										<button type="button" class="btn btn-success text-center" id="refresh" onclick="getLastXMLCam()">Refrescar</button>
+									</div>
+								</div>
+							</div>		
+						</div>
+					</div>
+				</div>
+				<div class="col-md-6" style="margin-bottom: 20px">
+					<div class="panel panel-default">
+						<div class="panel-body">
+							<div class="row" style="padding-top: 10px;margin-bottom: 10px;">
+								<div class="col-xs-4">
+									<button type="button" id="capturePictureButton" class="btn btn-success glyphicon glyphicon-camera" style=""  data-toggle="tooltip" title="Capturar imagen" onclick="capturePicture()"></button>
+								</div>
+								<div class="col-xs-8">
+									<div class="col-xs-5 no-padding" data-toggle="tooltip" title="Duraci&#243;n de la grabaci&#243;n de v&#237;deo">
+										<h5>Duraci&#243;n</h5>							
+									</div>
+									<div class="col-xs-3 no-padding">
+										<input id="videoCaptureDuration" type="number" name="quantity" min="1" max="30" step="1" value="5" style=" Width: 45Px; margin-top: 5px; text-align: center;">
+									</div>
+									<div class="col-xs-4">
+										<button type="button" id="captureVideoButton" class="btn btn-success glyphicon glyphicon-facetime-video" style="width: 38px;height: 34px;"  data-toggle="tooltip" title="Grabar v&#237;deo" onclick="captureRecord()"> </button>	
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="panel panel-default"> 
+						<div class="panel-body">
+							<div class="row" style="padding-top: 10px;margin-bottom: 10px;">
+								<div class="col-xs-12">												
+									<ul class="tree" id="mediaTree" onclick=getLastXMLMedia()>
+										<li>
+											<i class="glyphicon glyphicon-folder-close zear">
+											</i>
+											<a style="margin-left: -4px;">-</a>
+										</li>
+									</ul>																		
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>			
+		<div class="col-md-4">					
+			<div class="panel panel-default">				
+				<div class="panel-body">
+					<div class="row" style="no-padding">
+						<div class="col-xs-12" style="padding-right: 25px;">
+							<span id="roomberryStatusButton" class="btn btn-success btn-sm btn-round glyphicon glyphicon-signal" style="float: right;cursor: default" data-toggle="tooltip" title="Conectado"/>
+						</div>
+					</div>
+					<div class="row" style="padding-left: 10px; padding-right: 10px; padding-top:10px">
+						<div class="col-xs-5 no-padding">								
+							<div class="col-xs-4 no-padding">
+								<h5>Modo</h5>							
+							</div>
+							<div class="col-xs-7 no-padding">
+								<select id="oi_mode" type="select" name="oi_mode" onchange="sendOIMode(this.value)" value="" style="width: 75px;">
+									<option style="display:none">
+									<option value="3">Completo</option>
+									<option value="2">Seguro</option>
+									<option value="1">Pasivo</option>
+								</select>
+							</div>									
+						</div>
+						<div class="col-xs-7 no-padding">
+							<div class="col-xs-5 no-padding">
+								<h5>Telemetr&#237;a</h5>							
+							</div>
+							<div class="col-xs-3 no-padding">
+								<input id="refreshXMLRoombaRateInput" type="number" name="quantity" min="0.1" max="30" step="0.1" value="10.0" style=" Width: 55Px; margin-top: 5px; text-align: center;" onchange="updateRefreshRateXMLRoomba(this)">
+							</div>
+							<div class="col-xs-4" >
+								<button type="button" id="refreshRoombaXMLButton" class="btn btn-success glyphicon glyphicon-play" style="width: 38px;height: 34px" onclick="toogleRefreshRoombaXMLButton()"></button>
+							</div> 
+						</div>					
+					</div>
+				</div>
+			</div>	
+			<div class="panel panel-default">
+				<div class="panel-body">
+					<div class="row">
+						<div class="col-xs-5">
+							<table>
+							<tr>
+							<td>&nbsp;</td>
+							<td><button type="button" id="roombaUpButton" class="btn btn-primary" onclick="upRoomba();"><span class="glyphicon glyphicon-arrow-up"></span></button></td>
+							<td>&nbsp;</td>
+							</tr>
+							<tr>
+							<td><button type="button" id="roombaLeftButton" class="btn btn-primary" onclick="leftRoomba();"><span class="glyphicon glyphicon-share-alt flip-horizontal"></span></button></td>
+							<td><button type="button" id="roombaStopButton" class="btn btn-danger" onclick="stopRoomba();"><span class="glyphicon glyphicon-minus-sign"></td>
+							<td><button type="button" id="roombaRightButton" class="btn btn-primary" onclick="rightRoomba();"><span class="glyphicon glyphicon-share-alt"></span></button></td>
+							</tr>
+							<tr>
+							<td>&nbsp;</td>
+							<td><button type="button" id="roombaDownButton" class="btn btn-primary" onclick="downRoomba();"><span class="glyphicon glyphicon-arrow-down"></span></button></td>
+							<td>&nbsp;</td>
+							</tr>
+							</table>
+							<div style="margin-top: 10px;width:120px">
+								<input id="speedSpin" type="text" value="0" name="speedSpin" style="margin-top: 0px;padding-left: 8px;padding-right: 8px;">
+							</div>
+							<button type="button" id="advancedModeButton" data-toggle="collapse" data-target="#advancedDrivingMode" class="btn btn-warning" style="margin-top: 10px;">Modo avanzado</button>
+						</div>
+						<div class="col-xs-7">
+							<div class="col-xs-12" style="width:190px;height:190px;position:static;">
+								<div id="zone_joystick">
+							</div>
+							</div>
+						</div>
+					</div>
+					<div class="row">	
+						<div class="col-xs-12">
+							<div id="advancedDrivingMode" class="collapse">
+								<div class="row" style="margin-bottom: 10px; margin-top: 10px;">
+									<div class="col-xs-12">	
+										<div class="col-xs-3 no-padding">	
+											<h5 style="margin-top: 7px; margin-bottom: 0px;">Velocidad</h5>
+										</div>
+										<div class="col-xs-9 no-padding">
+											<div class="range range-primary">
+												<input type="range" id="requested_velocity_input" min="0" max="500" step="1" value="0" oninput="requested_velocity_output.value=value + MMS" onchange="sendDrive()">
+												<output id="requested_velocity_output"  style="min-width: 75px;">0 mm/s</output>
+											</div>
+										</div>
+									</div>
+								</div> 
+								<div class="row" style="margin-bottom: 10px">
+									<div class="col-xs-12">	
+										<div class="col-xs-3 no-padding">	
+											<h5 style="margin-top: 7px; margin-bottom: 0px;">Radio</h5>
+										</div>
+										<div class="col-xs-9 no-padding">
+											<div class="range range-primary">
+												<input type="range" id="requested_radius_input" min="-2000" max="2000" value="0" oninput="requested_radius_output.value=value + MM; radius = value;direction=FORWARD;" onchange="sendDrive()">
+												<output id="requested_radius_output" style="min-width: 75px;">0 mm</output>
+											</div>
+										</div>
+									</div>
+								</div>
+								<hr>
+								<div class="row" style="margin-bottom: 10px">
+									<div class="col-xs-12">	
+										<div class="col-xs-3 no-padding">	
+											<h5 style="margin-top: 7px; margin-bottom: 0px;">Velocidad &#8680;</h5>
+										</div>
+										<div class="col-xs-9 no-padding">
+											<div class="range range-primary">
+												<input type="range" id="requested_right_velocity_input" min="-500" max="500" value="0" oninput="requested_right_velocity_output.value=value + MMS;direction=FORWARD;" onchange="sendDriveDirect()">
+												<output id="requested_right_velocity_output"  style="min-width: 75px;">0 mm/s</output>
+											</div>
+										</div>
+									</div>
+								</div> 
+								<div class="row" style="margin-bottom: 10px">
+									<div class="col-xs-12">	
+										<div class="col-xs-3 no-padding">	
+											<h5 style="margin-top: 7px; margin-bottom: 0px;">Velocidad &#8678;</h5>
+										</div>
+										<div class="col-xs-9 no-padding">
+											<div class="range range-primary">
+												<input type="range" id="requested_left_velocity_input" min="-500" max="500" value="0" oninput="requested_left_velocity_output.value=value + MMS;direction=FORWARD;" onchange="sendDriveDirect()">
+												<output id="requested_left_velocity_output" style="min-width: 75px;">0 mm/s</output>
+											</div>
+										</div>
+									</div>
+								</div>
+								<hr>
+								<div class="row" style="margin-bottom: 10px">
+									<div class="col-xs-12">	
+										<div class="col-xs-3 no-padding">	
+											<h5 style="margin-top: 7px; margin-bottom: 0px;">PWM &#8680;</h5>
+										</div>
+										<div class="col-xs-9 no-padding">
+											<div class="range range-primary">
+												<input type="range" id="right_PWM_input" min="-100" max="100" value="0" oninput="right_PWM_output.value=value + PERCENT" onchange="sendDrivePWM()">
+												<output id="right_PWM_output"  style="min-width: 75px;">0 %</output>
+											</div>
+										</div>
+									</div>
+								</div> 
+								<div class="row" style="margin-bottom: 10px">
+									<div class="col-xs-12">	
+										<div class="col-xs-3 no-padding">	
+											<h5 style="margin-top: 7px; margin-bottom: 0px;">PWM &#8678;</h5>
+										</div>
+										<div class="col-xs-9 no-padding">
+											<div class="range range-primary">
+												<input type="range" id="left_PWM_input" min="-100" max="100" value="0" oninput="left_PWM_output.value=value + PERCENT" onchange="sendDrivePWM()">
+												<output id="left_PWM_output"  style="min-width: 75px;">0 %</output>
+											</div>
+										</div>
+									</div>
+								</div>
+								<hr>
+								<div class="row" style="margin-bottom: 10px">
+									<div class="col-xs-12">	
+										<div class="col-xs-3 no-padding">	
+											<h5 style="margin-top: 7px; margin-bottom: 0px;">Cepillo</h5>
+										</div>
+										<div class="col-xs-9 no-padding">
+											<div class="range range-primary">
+												<input type="range" id="main_brush_input" min="-100" max="100" value="0" oninput="main_brush_output.value=value + PERCENT" onchange="sendMotorsPWM()">
+												<output id="main_brush_output"  style="min-width: 75px;">0 %</output>
+											</div>
+										</div>
+									</div>
+								</div> 
+								<div class="row" style="margin-bottom: 10px">
+									<div class="col-xs-12">	
+										<div class="col-xs-3 no-padding">	
+											<h5 style="margin-top: 7px; margin-bottom: 0px;">Lateral</h5>
+										</div>
+										<div class="col-xs-9 no-padding">
+											<div class="range range-primary">
+												<input type="range" id="side_brush_input" min="-100" max="100" value="0" oninput="side_brush_output.value=value + PERCENT" onchange="sendMotorsPWM()">
+												<output id="side_brush_output"  style="min-width: 75px;">0 %</output>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="row" style="margin-bottom: 10px">
+									<div class="col-xs-12">	
+										<div class="col-xs-3 no-padding">	
+											<h5 style="margin-top: 7px; margin-bottom: 0px;">Aspirador</h5>
+										</div>
+										<div class="col-xs-9 no-padding">
+											<div class="range range-primary">
+												<input type="range" id="vacuum_input" min="0" max="100" value="0" oninput="vacuum_input.value=value + PERCENT" onchange="sendMotorsPWM()">
+												<output id="vacuum_output"  style="min-width: 75px;">0 %</output>
+											</div>
+										</div>
+									</div>
+								</div>
+								<hr>
+								<div class="row">
+									<div class="col-xs-12">
+										<button type="button" id="reset_roomba_distance_angle" onclick="basicFunction(this)" class="btn btn-danger" style="margin-top: 10px;">Reset</button>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>			
+			<div class="panel panel-default">				
+				<div class="panel-body">
+					<div class="row">								
+						<div class="col-xs-12 no-padding">
+							<canvas id="roombaCanva" width="328" height="370" style="padding-left: 0; padding-right: 0; margin-left: auto; margin-right: auto; display: block;"></canvas>
+						</div>
+					</div>
+				</div>	
+			</div> 
+			<div class="panel panel-default">				
+				<div class="panel-body">
+					<div class="row" style="padding-left: 10px">
+						<div class="col-xs-8">								
+							<div class="row roomba-output">
+								<div class="col-xs-4 no-padding">
+									<h5>Carga:</h5>							
+								</div>
+								<div class="col-xs-8 no-padding roomba-output">
+									<output id="charging_state">Desconocido</output>
+								</div>									
+							</div>
+							<div class="row roomba-output">
+								<div class="col-xs-4 no-padding">
+									<h5>Consumo:</h5>							
+								</div>
+								<div class="col-xs-8 no-padding roomba-output">
+									<output id="current">Desconocido</output>
+								</div>									
+							</div>
+							<div class="row roomba-output">
+								<div class="col-xs-4 no-padding">
+									<h5>Voltaje:</h5>							
+								</div>
+								<div class="col-xs-8 no-padding roomba-output">
+									<output id="voltage">Desconocido</output>
+								</div>									
+							</div>
+							<div class="row roomba-output">
+								<div class="col-xs-4 no-padding">
+									<h5>Temp:<h5>							
+								</div>
+								<div class="col-xs-8 no-padding roomba-output">
+									<output id="temperature">Desconocido</output>
+								</div>									
+							</div>								
+						</div>
+						<div class="col-xs-4 no-padding" id="batteryGauge" style="width:95px; height:95px; margin-left:10px;"></div>
+					</div>
+				</div>	
+			</div>			
+			<div class="panel panel-default">
+				<div class="panel-body">
+					<div class="row" style="padding: 10px">
+						<div class="col-xs-6 no-padding">
+							<div class="col-xs-3 no-padding">
+								<h5>LCD</h5>							
+							</div>
+							<div class="col-xs-5 no-padding">
+								<input id="messageLCD" type="text" name="messageLCD" value=test style=" Width: 55Px; margin-top: 5px; text-align: center; padding-left: 0px;">
+							</div>
+							<div class="col-xs-4 no-padding">
+								<button type="button" id="playLCDButton" data-toggle="tooltip" title="Ver en LCD" class="btn btn-success glyphicon glyphicon-play" style="width: 38px;height: 34px" onclick="sendLCDMessage()"></button>
+							</div> 
+						</div>
+						<div class="col-xs-6 no-padding">
+							<div class="col-xs-5 no-padding">
+								<select id="songSelector" type="select" name="songSelector" value="">
+									<option value="3">4</option>
+									<option value="2">3</option>
+									<option value="1">2</option>
+									<option value="0">1</option>
+								</select>
+							</div>	
+							<div class="col-xs-7 no-padding" >
+								<button type="button" id="playSongButton" data-toggle="tooltip" title="Reproducir canci&#243;n" class="btn btn-success glyphicon glyphicon-play" onclick="playSong()"></button>
+								<button type="button" id="loadSongButton" data-toggle="tooltip" title="Componer canci&#243;n" class="btn btn-success glyphicon glyphicon-edit" onclick="editSong()"></button>
+							</div> 
+						</div>
+					</div>
+					<div class="row" style="padding: 10px">						
+						<div class="col-xs-12 no-padding" >
+							<button type="button" id="clean" data-toggle="tooltip" title="Limpiar" class="btn btn-success glyphicon glyphicon-off" onclick="basicFunction(this)"></button>
+							<button type="button" id="clean_spot" data-toggle="tooltip" title="Spot" class="btn btn-success glyphicon glyphicon-repeat" onclick="basicFunction(this)"></button>
+							<button type="button" id="seek_dock" data-toggle="tooltip" title="Volver a estaci&#243;n de carga" class="btn btn-success glyphicon glyphicon-home" onclick="basicFunction(this)"></button>
+							<button type="button" id="clean_max" data-toggle="tooltip" title="Limpiar hasta quedarse sin bater&#237;a" class="btn btn-success glyphicon glyphicon-exclamation-sign" onclick="basicFunction(this)"></button>
+							<button type="button" id="power_down" data-toggle="tooltip" title="Apagar" class="btn btn-success glyphicon glyphicon-remove" onclick="basicFunction(this)"></button>							
+							<button type="button" id="setTimeButton" data-toggle="tooltip" title="Configurar hora" class="btn btn-success glyphicon glyphicon-time"  style="margin-left: 20px;"  onclick="setCurrentTime()"></button>
+							<button type="button" id="setScheduleButton" data-toggle="tooltip" title="Configurar calendario" class="btn btn-success glyphicon glyphicon-calendar" onclick="editSchedule()"></button>
+						</div> 
+					</div>
+				</div>
+			</div>	
+		</div> 
+        </div>
+	</div>
+
+<!-- Modal HTML  -->
+<div class="modal fade" id="editRoombaModal" role="dialog">
+	<div class="modal-dialog">
+		<!-- Modal content-->
+		<div class="modal-content">
+			<div class="modal-header">
+				<h4 class="modal-title" id="editRoombaModalTitle" >										
+				</h4>
+			</div>
+			<div class="modal-body" style="max-height: calc(75vh - 212px); overflow-y: auto;">
+				<div class="container-fluid">
+					<div id="modalTable" >
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<div class="row">
+					<div class="col-md-4 col-xs-12 pull-left" >
+						<input id="saveNameModalInput" type="text" value="" style=" Width: 100px;height: 33px;">
+						<button type="button" id="saveModalButton" class="btn btn-success glyphicon glyphicon-save" data-toggle="tooltip" title="Guardar canci&#243;n en disco" onclick="saveSongXML()"></button> 
+					</div>
+					<div class="col-md-4 col-xs-12 " >
+						<button type="button" id="deleteModalButton" class="btn btn-danger glyphicon glyphicon-trash" data-toggle="tooltip" title="Borrar canci&#243;n de disco" onclick="deleteSong()"></button> 
+						<select id="songNamesModalSelect" onchange="loadSongFromXML(value)" style="height: 33px;visibility:hidden;width: 100px;" data-toggle="tooltip" title="Selecciona una canci&#243;n">
+						</select>
+					</div>
+					<div class="col-md-4 col-xs-12  pull-right" >
+						<button type="button" id="uploadModalButton" class="btn btn-warning glyphicon glyphicon-upload" data-dismiss="modal" onclick="" data-toggle="tooltip" title="Enviar operaci&#243;n a Roomba"></button> 
+						<button type="button" id="playModalButton" class="btn btn-success glyphicon glyphicon-play" onclick="playSongSimulate()" data-toggle="tooltip" title="Reproducir canci&#243;n"></button>
+						<button type="button" id="closeEditorModalButton" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+					</div>
+				</div>
+			</div>
+		</div>		  
+	</div>
+</div>
+
+<div id="mediaModal" class="modal fade" tabindex="-1">
+	<div class="modal-dialog" style="width: auto; max-width: 1312px;">
+		<div class="modal-content">
+			<div class="modal-body">                   
+				<div id="mediaModalContent" class="ekko-lightbox-item fade in show">
+				</div>				 		
+				<a id="prevButton" class="prev button-jump" onclick="prevImage()">&#10094;</a>
+				<a id="nextButton" class="next button-jump" onclick="nextImage()">&#10095;</a>						
+				<div id="mediaModalLoader" class="multimediaLoader">
+					<div class="ekko-lightbox-loader"><div><div></div><div></div></div></div>
+				</div>	
+			</div>
+		</div>
+	</div>
+</div>	
+	
+<!-- Footer  -->
+<hr>   
+   <footer>
+      <div class="container-fix">
+            &copy; Daniel Mac&#237;as 2018
+            </div>
+    </footer>
+<!-- 'raw' makes Cheetah skip this section so it doesn't get confused by the dollar signs in the js -->
+
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <!-- Ekko-Lightbox minified -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ekko-lightbox/5.2.0/ekko-lightbox.min.js" integrity="sha256-JRmDZdHmGahZjoYtQActan4Leibhl+7jZOETtJT3DCY=" crossorigin="anonymous"></script>
+	<!-- Minified JavaScript -->
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+	<!-- Minified Bootstrap switch -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-switch/3.3.4/js/bootstrap-switch.min.js" integrity="sha256-AKUJYz2DyEoZYHh2/+zPHm1tTdYb4cmG8HC2ydmTzM4=" crossorigin="anonymous"></script>
+	<!-- Minified Bootstrap colorpicker -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-colorpicker/2.5.1/js/bootstrap-colorpicker.min.js" integrity="sha256-/48jq3JSvRjSX+/bZosYmT29RkZk4lPukj1HKRfABU4=" crossorigin="anonymous"></script>
+	<!-- Minified Raphael + justgage -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/raphael/2.2.7/raphael.min.js" integrity="sha256-67By+NpOtm9ka1R6xpUefeGOY8kWWHHRAKlvaTJ7ONI=" crossorigin="anonymous"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/justgage/1.2.9/justgage.min.js" integrity="sha256-nL2oTVCXGFtdu+pxt8QkObEXDFh0CVRkwLPIy04s8z0=" crossorigin="anonymous"></script>
+	<!-- Minified Nipplejs -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/nipplejs/0.6.8/nipplejs.min.js" integrity="sha256-wbE2bMatJx5rbMisrJrH3F0RO0XEhn4joqJ9xR+WvcU=" crossorigin="anonymous"></script>
+	<!-- Minified Touchspin -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-touchspin/4.2.5/jquery.bootstrap-touchspin.min.js" integrity="sha256-h5WIHC26w8nPP2s/6Ke+pk1qbWeaMKrO3NX0o5I19Rs=" crossorigin="anonymous"></script>
+	<!-- Minified ToneJS -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/tone/13.2.0/Tone.min.js" integrity="sha256-x8ibE5oIcf5JWPLWE8LqQLIxHLRGsyu5yZgKvbde5Jo=" crossorigin="anonymous"></script>
+	<!-- Common functions js -->
+	<script src="js/common.js"></script>
+	<script src="js/roomberry.js"></script>
+	<script type="text/javascript">
+
+	init();
+	
+	</script>		
+		
+
+  </body>
+</html>
+
