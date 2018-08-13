@@ -27,7 +27,7 @@ To build this project you will need:
 
 `Roomberry.py` creates a **multithreading python web server** that interacts with Roomba and the camera module installed. This code is intended to run as a daemon and handles the HTTP GET Requests performed against the Raspberry Pi.
 
-To install it just download the last release and configure the service:
+To install it just download the last release and configure it as a service:
 ```bash
 wget https://github.com/danimaciasperea/Roomberry/archive/V1.1.tar.gz /tmp/
 tar -xvf /tmp/V1.1.tar.gz
@@ -65,12 +65,11 @@ To use the **web interface** you will need a Raspberry running `apache2` with `P
 sudo cp -R /tmp/v1.1/web-app/ /var/www/
 ```
 
-It has been designed using Bootstrap framework (HTML5 and Javascript with AJAX requests). You will probably need to adapt the `HTML` code to your particular needs , but feel free to use the code parts you are interested in.
+It has been designed using Bootstrap framework (HTML5 and Javascript with AJAX requests). You will probably need to adapt the `HTML` code to your particular needs/environment.
 
 <p align="center">
 <img src="https://domoticproject.com/wp-content/uploads/2018/08/Screen-capture-WebInterface-Roomberry.png">
 </p>
-
 
 Find the complete instructions on how to build this project in the following [post](https://domoticproject.com/roomberry-surveillance-robot-roomba-raspberry-pi-zero-w-camera/).
 
