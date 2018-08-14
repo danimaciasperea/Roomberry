@@ -2,11 +2,7 @@
 
 **Roomberry** is a surveillance robot based on **Roomba** using a **Raspberry Pi Zero W** and a **camera module**. A demo of Roomberry's capabilities as well as the web interface developed to interact with the robot can be seen in the following video:
 
-<p align="center">
-IMAGE WITH VIDEO!
-</p>
-
-
+[![Roomberry Demo](https://domoticproject.com/wp-content/uploads/2018/08/RoomberryDemoVisualCue.png)](https://www.youtube.com/watch?&v=kQcQSE5pvNA "Roomberry Demo")
 
 ## Requirements
 
