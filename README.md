@@ -9,7 +9,7 @@
 To build this project you will need:
 -	A **mini DIN 7 male connector** (DIN 8 is compatible too) with Roomba's pin 3 (RxD), 4 (TxD) and 5 (BRC).
 -	A compatible **Roomba** (series 600/700/800) adapted to provide a regulated 5 V power source direct from the battery using an step-down (Pololu D24V5F5 is a good option).
--	A **Raspberry Pi Zero W** with Raspbian Stretch Lite version installed. The following software should also be installed: pyserial library, picamera [package](https://github.com/waveform80/picamera). and an adapted version of Matthew Witherwax' Python iRobot [library](https://github.com/danimaciasperea/irobot). 
+-	A **Raspberry Pi Zero W** with Raspbian Stretch Lite version installed. The following software should also be installed: pyserial library, picamera [package](https://github.com/waveform80/picamera) and an adapted version of Matthew Witherwax' Python iRobot [library](https://github.com/danimaciasperea/irobot). 
 -	A **Raspberry camera module** (I used Version 1).
 -	A HAT (Hardware Attached on Top) board to connect Raspberry's GPIO with a **Logical Level Converter** (Roomba's Serial is 5 V compatible but Raspberry uses 3.3 V).
 <p align="center">
