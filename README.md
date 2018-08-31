@@ -25,12 +25,12 @@ To build this project you will need:
 
 To install it just download the last release and configure it as a service:
 ```bash
-wget https://github.com/danimaciasperea/Roomberry/archive/V1.1.tar.gz /tmp/
-tar -xvf /tmp/V1.1.tar.gz
+wget https://github.com/danimaciasperea/Roomberry/archive/1.0.0.tar.gz -P /tmp/
+tar -xvf /tmp/1.0.0.tar.gz
 
 # Before doing next step, adapt the code to your environment (serial port used, IFTTT Key, etc.)
-sudo cp /tmp/v1.1/roomberry/roomberry.py /usr/local/bin/
-sudo cp /tmp/v1.1/roomberry/roomberry.service lib/systemd/system/
+sudo cp /tmp/Roomberry-1.0.0/roomberry/roomberry.py /usr/local/bin/
+sudo cp /tmp/Roomberry-1.0.0/roomberry/roomberry.service lib/systemd/system/
 
 sudo systemctl enable roomberry.service
 system roomberry start
@@ -58,7 +58,7 @@ wget roomberry/cam/20180810/20180810-102849.jpg
 To use the **web interface** you will need a Raspberry running `apache2` with `PHP` enabled. Just deploy the web-application on the web server path. For instance:
 
 ```bash
-sudo cp -R /tmp/v1.1/web-app/ /var/www/
+sudo cp -R /tmp/Roomberry-1.0.0/web-app/ /var/www/
 ```
 
 It has been designed using Bootstrap framework (HTML5 and Javascript with AJAX requests). You will probably need to adapt the `HTML` code to your particular needs/environment.
