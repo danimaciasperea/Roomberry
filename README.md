@@ -26,14 +26,14 @@ To build this project you will need:
 To install it just download the last release and configure it as a service:
 ```bash
 wget https://github.com/danimaciasperea/Roomberry/archive/1.0.0.tar.gz -P /tmp/
-tar -xvf /tmp/1.0.0.tar.gz
+tar -xvf /tmp/1.0.0.tar.gz -C /tmp/
 
 # Before doing next step, adapt the code to your environment (serial port used, IFTTT Key, etc.)
 sudo cp /tmp/Roomberry-1.0.0/roomberry/roomberry.py /usr/local/bin/
-sudo cp /tmp/Roomberry-1.0.0/roomberry/roomberry.service lib/systemd/system/
+sudo cp /tmp/Roomberry-1.0.0/roomberry/roomberry.service /lib/systemd/system/
 
 sudo systemctl enable roomberry.service
-system roomberry start
+sudo system roomberry start
 
 ```
 
