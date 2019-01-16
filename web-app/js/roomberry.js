@@ -300,7 +300,7 @@
 	function sendOIMode(oi_mode)
 	{
 		if (oi_mode == "") return;
-		var op = "_change_mode";
+		var op = "change_mode";
 		var xmlhttp = new XMLHttpRequest();
 		xmlhttp.open("POST", "roomberryWrapper.php", true);
 		xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
