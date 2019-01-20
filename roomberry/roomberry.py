@@ -39,12 +39,12 @@ ANNOTATE_FOREGROUND_COLOR = '#ffffff'
 ANNOTATE_BACKGROUND_COLOR = '#808080'
 PATH_TO_WWW='/tmp'
 PATH_TO_ROOMBA='/roomba/'
-PATH_TO_CAM='/cam/'
+PATH_TO_CAM='/cam'
 PATH_TO_MEDIA='/media'
 PATH_TO_ROOMBA_XML = PATH_TO_ROOMBA + 'roomba.xml'
-PATH_TO_CAM_XML = PATH_TO_CAM + 'cam.xml'
-PATH_TO_MEDIA_XML = PATH_TO_CAM + 'media.xml'
-PATH_TO_SNAP = PATH_TO_CAM + 'snap.jpg'
+PATH_TO_CAM_XML = PATH_TO_CAM + '/cam.xml'
+PATH_TO_MEDIA_XML = PATH_TO_CAM + '/media.xml'
+PATH_TO_SNAP = PATH_TO_CAM + '/snap.jpg'
 PATH_TO_LOG = '/var/log/roomberry.log'
 
 CAM_XML_TAGS = [ ('annotate_background'), ('annotate_foreground'), ( 'annotate_text_size'), ('awb_mode'), ('brightness'), ('contrast'), ('drc_strength'), \
@@ -163,7 +163,7 @@ class RoomberryServer(ThreadingMixIn, HTTPServer):
         
 #This class will handle any incoming request from the browser 
 class RoomberryHandler(BaseHTTPRequestHandler):
-    
+  
     def __init__(self, request, client_address, server):
         self.logger = logging.getLogger('Roomberry')
         super(RoomberryHandler, self).__init__(request, client_address, server)
@@ -177,7 +177,7 @@ class RoomberryHandler(BaseHTTPRequestHandler):
                 ET.SubElement(root, '-'.join(tag) )
             else:
                 ET.SubElement(root, tag)
-        tree = ET.ElementTree(root)        
+        tree = ET.ElementTree(root)   
         return tree
     
     #Update the xml file with cam configuration
@@ -186,9 +186,9 @@ class RoomberryHandler(BaseHTTPRequestHandler):
         #Load the XML file. If it does not exists, create an empty tree
         xml_file = Path(PATH_TO_WWW + PATH_TO_CAM_XML)
         if xml_file.exists():
-           tree = ET.parse(PATH_TO_WWW + PATH_TO_CAM_XML)
+            tree = ET.parse(PATH_TO_WWW + PATH_TO_CAM_XML)
         else:
-           tree = self.create_cam_xml()
+            tree = self.create_cam_xml()
         
         #Read the xml file structure
         root = tree.getroot()       
@@ -272,7 +272,7 @@ class RoomberryHandler(BaseHTTPRequestHandler):
            remove(PATH_TO_WWW + PATH_TO_MEDIA_XML)
         
         media_dictionary = {}
-        for dirpath, dirs, files in walk(PATH_TO_MEDIA):            
+        for dirpath, dirs, files in walk(PATH_TO_WWW + PATH_TO_MEDIA):            
             if files:
                 media_dictionary[dirpath] = sorted(files, reverse=True) 
         
@@ -314,7 +314,7 @@ class RoomberryHandler(BaseHTTPRequestHandler):
         # Do not use lock, allow capture and record concurrently
         year, month, day, hour, minute, second = strftime("%Y,%m,%d,%H,%M,%S", localtime(time())).split(',')
         self._create_day_folder(year, month, day)
-        self.server.camera.start_recording(PATH_TO_MEDIA + '/' + PATH_TO_CAM + '/' + year + month + day + '/' + year + month + day + '-' + hour + minute + second + '.h264', format = 'h264', quality = round(40-self.server.capture_quality/100.0*30))
+        self.server.camera.start_recording(PATH_TO_WWW + PATH_TO_MEDIA + PATH_TO_CAM + '/' + year + month + day + '/' + year + month + day + '-' + hour + minute + second + '.h264', format = 'h264', quality = round(40-self.server.capture_quality/100.0*30))
         self.server.camera.wait_recording(int(duration))
         self.server.camera.stop_recording()
 
@@ -330,7 +330,7 @@ class RoomberryHandler(BaseHTTPRequestHandler):
             year, month, day, hour, minute, second = strftime("%Y,%m,%d,%H,%M,%S", localtime(time())).split(',')
             self._create_day_folder(year, month, day)
             self.server.camera.annotate_text = strftime(self.server.annotate_text, localtime(time()))
-            self.server.camera.capture(PATH_TO_MEDIA + '/' + PATH_TO_CAM + '/' + year + month + day  + '/' + year + month + day + '-' + hour + minute + second + '.jpg', quality = self.server.snap_quality)
+            self.server.camera.capture(PATH_TO_WWW + PATH_TO_MEDIA + PATH_TO_CAM + '/' + year + month + day  + '/' + year + month + day + '-' + hour + minute + second + '.jpg', quality = self.server.snap_quality)
             self.server.camera_lock.release()    
 
     def send_reply(self, basePath=PATH_TO_WWW, mimetype=None):          
@@ -477,9 +477,9 @@ class RoomberryHandler(BaseHTTPRequestHandler):
             return int(value)
 
     @staticmethod 
-    def _create_day_folder(year, month, day):        
-        if not path.isdir(PATH_TO_MEDIA + '/' + PATH_TO_CAM + '/' + year + month + day):
-            makedirs(PATH_TO_MEDIA + '/' + PATH_TO_CAM + '/' + year + month + day)
+    def _create_day_folder(year, month, day): 
+        if not path.isdir(PATH_TO_WWW + PATH_TO_MEDIA + PATH_TO_CAM + '/' + year + month + day):
+            makedirs(PATH_TO_WWW + PATH_TO_MEDIA + PATH_TO_CAM + '/' + year + month + day)
           
 def run(http_port=PORT_NUMBER, serial_port=PORT_SERIAL, brc_pin=BRC_GPIO):
      
@@ -503,7 +503,7 @@ def run(http_port=PORT_NUMBER, serial_port=PORT_SERIAL, brc_pin=BRC_GPIO):
             
     #Initialize web server
     httpd = RoomberryServer(('', http_port), RoomberryHandler, serial_port, brc_pin)
-    
+
     try:
         httpd.start()
        
