@@ -1,46 +1,58 @@
 <?php
 
-	$basePath = "/var/www/html/home/";
-	$songsPath = $basePath . "songs/";
-	$pathToMultimedia = "multimedia";
-	$snapFilename = "multimedia/snapR.jpg";
+	/**
+     * Calculate if the file passed as parameter is or not a video.
+     *
+     * @param str $filepath File path including extension.
+     *
+     * @return True if the file is a video, false otherwise.
+     */
+	function isVideo($filepath)
+	{
+		return (substr($filepath, -4, 4) == ".avi");
+	}
+	
+	/**
+     * Obtain the day of the week that corresponds to the day passed as parameter.
+     *
+     * @param int $year Year.
+     * @param int $month Month.
+     * @param int $day Day.
+     *
+     * @return The day of the week corresponding to the day/month/year passed as parameter.
+     */	
+	function dayOfWeek($year,$month,$day)
+	{
+		return date("w", strtotime($year.$month.$day));
+	}
+
+	// read the config file
+	$config = parse_ini_file('config.ini',true);			
+	$basePath = $config['roomberry']['basePath'];
+	$songsPath = $config['roomberry']['songsPath'];
+	$multimediaPath = $config['roomberry']['multimediaPath'];
+	$curlTimeout = $config['roomberry']['curlTimeout'];;
+	
+	$snapFilename = "snapR.jpg";
 	$roombaXMLFilename = "roomba.xml";
 	$camXMLFilename = "cam.xml";
 	$mediaXMLFilename = "media.xml";	
+	
 	$url = "http://roomberry";
 	$snapUrl = $url."/cam/snap.jpg";
 	$roombaXMLUrl = $url."/roomba/roomba.xml";
 	$camXMLUrl = $url."/cam/cam.xml";
-	$mediaXMLUrl = $url."/cam/media.xml";
-	$curlTimeout = 30;
-	$months=array('Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre');
-	$days=array('Domingo','Lunes','Martes','Mi&eacute;rcoles','Jueves','Viernes','S&aacute;bado');
+	$mediaXMLUrl = $url."/cam/media.xml";	
 
 	// create a curl object to communicate with calduino
 	$ch = curl_init();
 	curl_setopt($ch,CURLOPT_TIMEOUT, $curlTimeout);
 	curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 	curl_setopt($ch, CURLOPT_FORBID_REUSE, 1);	
-
-	//Create multimedia folder
-	$folder=$basePath . $pathToMultimedia;
-	if (!file_exists($folder)) 
-	{
-			mkdir($folder, 0755, true);
-	}
-	
-	function isVideo($filename){
-		return (substr($filename, -5, 5) == ".h264");
-	}
-
-	function dayOfWeek($year,$month,$day)
-	{
-		global $days;
-		return $days[date("w", strtotime($year.$month.$day))]." ".$day;
-	}
-	
+			
 	/* if started from commandline, wrap ops to  $_POST */
-	if (!isset($_SERVER["HTTP_HOST"])) {
+	if (!isset($_SERVER["HTTP_HOST"]))
+	{
 	  parse_str($argv[1], $_POST);
 	}
 	
@@ -52,9 +64,9 @@
 	switch ($op) 
 	{	
 		case "lastSnapshot":			
-			if(@copy($snapUrl, $basePath.$snapFilename."new"))
+			if(@copy($snapUrl, $multimediaPath.$snapFilename."new"))
 			{
-				@rename($basePath.$snapFilename."new", $basePath.$snapFilename);
+				@rename($multimediaPath.$snapFilename."new", $multimediaPath.$snapFilename);
 			}
 			else
 			{
@@ -90,24 +102,27 @@
 		case "getMedia":
 			$file = $_POST["file"];
 			
+			//Create multimedia folder if it does not exists
+			if (!is_dir($multimediaPath)) mkdir($multimediaPath, 0755);
+			
 			// remove photos and videos older than 5 minuts
-			$unixCommand = "sudo find ".$basePath."multimedia/ -maxdepth 1 -mmin +5 -type f -name \"*\" -exec rm -f {} \;";
+			$unixCommand = "sudo find ".$multimediaPath." -maxdepth 1 -mmin +5 -type f -name \"*\" -exec rm -f {} \;";
 			shell_exec ($unixCommand);
 
 			if (isVideo($file))
 			{
-				if (file_exists($basePath."multimedia/".explode('.',explode('/',$file)[1])[0].".mp4"))
+				if (file_exists($multimediaPath.explode('.',explode('/',$file)[1])[0].".mp4"))
 				{
 					echo explode('.',explode('/',$file)[1])[0].".mp4";
 				}
-				else if(copy($url."/cam/".$file, $basePath."multimedia/".explode('/',$file)[1]))
+				else if(copy($url."/cam/".$file, $multimediaPath.explode('/',$file)[1]))
 				{
 					// Convert to mp4
-					$unixCommand = "sudo MP4Box -quiet -add ". $basePath ."multimedia/".explode('/',$file)[1]. " ".$basePath."multimedia/".explode('.',explode('/',$file)[1])[0].".mp4". " 2>&1";;
+					$unixCommand = "sudo MP4Box -quiet -add ". $multimediaPath.explode('/',$file)[1]. " ".$multimediaPath.explode('.',explode('/',$file)[1])[0].".mp4". " 2>&1";;
 					shell_exec ($unixCommand);
 					
 					// Delete h264 file
-					unlink($basePath."multimedia/".explode('/',$file)[1]);
+					unlink($multimediaPath.explode('/',$file)[1]);
 
 					echo explode('.',explode('/',$file)[1])[0].".mp4";
 						
@@ -118,7 +133,7 @@
 					exit(1);
 				}
 			}
-			else if ((file_exists($basePath."multimedia/".explode('/',$file)[1])) || (copy($url."/cam/".$file, $basePath."multimedia/".explode('/',$file)[1])))
+			else if ((file_exists($multimediaPath.explode('/',$file)[1])) || (copy($url."/cam/".$file, $multimediaPath.explode('/',$file)[1])))
 			{
 				echo explode('/',$file)[1];
 			}
@@ -158,12 +173,12 @@
 					{
 						$httpResponse .= ($lastMonth != 0) ? "</ul></li>" : "";
 						$httpResponse .= $closeMonths ?
-												"<li style=\"display: none;\" onclick=\"openMediaMonth(this)\"><i class=\"glyphicon glyphicon-folder-close month\" id=".$currentYear.$currentMonth."></i><a>".$months[intval($currentMonth)-1]."</a><ul>" :
-												"<li onclick=\"openMediaMonth(this)\"><i class=\"glyphicon glyphicon-folder-close month\" id=".$currentYear.$currentMonth."></i><a>".$months[intval($currentMonth)-1]."</a><ul>";	
+												"<li style=\"display: none;\" onclick=\"openMediaMonth(this)\"><i class=\"glyphicon glyphicon-folder-close month\" id=".$currentYear.$currentMonth."></i><a>".$config['common']['month'][intval($currentMonth)-1]."</a><ul>" :
+												"<li onclick=\"openMediaMonth(this)\"><i class=\"glyphicon glyphicon-folder-close month\" id=".$currentYear.$currentMonth."></i><a>".$config['common']['month'][intval($currentMonth)-1]."</a><ul>";	
 						$lastMonth=$currentMonth;
 					}
 
-					$httpResponse .= "<li ".($firstOpen ? "" : "style=\"display: none;\"" )." onclick=\"openDay(this)\" id=".$currentYear.$currentMonth.$day."><i class=\"glyphicon glyphicon-folder-close day\"></i><a>".dayOfWeek($currentYear,$currentMonth,$day)."</a><ul>";
+					$httpResponse .= "<li ".($firstOpen ? "" : "style=\"display: none;\"" )." onclick=\"openDay(this)\" id=".$currentYear.$currentMonth.$day."><i class=\"glyphicon glyphicon-folder-close day\"></i><a>".$config['common']['day'][dayOfWeek($currentYear,$currentMonth,$day)]." ".$day."</a><ul>";
 					
 					foreach ($folder->file as $file)
 					{
@@ -246,5 +261,3 @@
 	exit(0);
 
 ?>
-#raw
-
