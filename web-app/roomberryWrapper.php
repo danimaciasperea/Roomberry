@@ -2,6 +2,7 @@
 
 	$basePath = "/var/www/html/home/";
 	$songsPath = $basePath . "songs/";
+	$pathToMultimedia = "multimedia";
 	$snapFilename = "multimedia/snapR.jpg";
 	$roombaXMLFilename = "roomba.xml";
 	$camXMLFilename = "cam.xml";
@@ -20,6 +21,13 @@
 	curl_setopt($ch,CURLOPT_TIMEOUT, $curlTimeout);
 	curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 	curl_setopt($ch, CURLOPT_FORBID_REUSE, 1);	
+
+	//Create multimedia folder
+	$folder=$basePath . $pathToMultimedia;
+	if (!file_exists($folder)) 
+	{
+			mkdir($folder, 0755, true);
+	}
 	
 	function isVideo($filename){
 		return (substr($filename, -5, 5) == ".h264");
