@@ -9,7 +9,7 @@
      */
 	function isVideo($filepath)
 	{
-		return (substr($filepath, -4, 4) == ".avi");
+		return (substr($filepath, -5, 5) == ".h264");
 	}
 	
 	/**
@@ -25,20 +25,42 @@
 	{
 		return date("w", strtotime($year.$month.$day));
 	}
+	
+	/**
+	 * Remove multimedia files older than parameter minutes
+	 *
+	 * @param int $minutesToKeep Maximal number of minutes to keep the multimedia files.
+	 *
+	 */	 
+	function removeOldMultimedia($minutesToKeep)
+	{
+		global $multimediaPath;
+
+		$files = glob($multimediaPath."*");
+		$now   = time();
+
+		foreach ($files as $file)
+		{
+			if (is_file($file) && ($now - filemtime($file) >= 60 * $minutesToKeep))
+			{
+				unlink($file);
+			}
+		}
+	}
 
 	// read the config file
 	$config = parse_ini_file('config.ini',true);			
 	$basePath = $config['roomberry']['basePath'];
 	$songsPath = $config['roomberry']['songsPath'];
 	$multimediaPath = $config['roomberry']['multimediaPath'];
-	$curlTimeout = $config['roomberry']['curlTimeout'];;
+	$curlTimeout = $config['roomberry']['curlTimeout'];	
+	$url = $config['roomberry']['url'];
 	
 	$snapFilename = "snapR.jpg";
 	$roombaXMLFilename = "roomba.xml";
 	$camXMLFilename = "cam.xml";
 	$mediaXMLFilename = "media.xml";	
 	
-	$url = "http://roomberry";
 	$snapUrl = $url."/cam/snap.jpg";
 	$roombaXMLUrl = $url."/roomba/roomba.xml";
 	$camXMLUrl = $url."/cam/cam.xml";
@@ -49,7 +71,7 @@
 	curl_setopt($ch,CURLOPT_TIMEOUT, $curlTimeout);
 	curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 	curl_setopt($ch, CURLOPT_FORBID_REUSE, 1);	
-			
+	
 	/* if started from commandline, wrap ops to  $_POST */
 	if (!isset($_SERVER["HTTP_HOST"]))
 	{
@@ -63,7 +85,11 @@
 	
 	switch ($op) 
 	{	
-		case "lastSnapshot":			
+		case "lastSnapshot":
+		
+			//Create multimedia folder if it does not exists
+			if (!is_dir($multimediaPath)) mkdir($multimediaPath, 0755);	
+			
 			if(@copy($snapUrl, $multimediaPath.$snapFilename."new"))
 			{
 				@rename($multimediaPath.$snapFilename."new", $multimediaPath.$snapFilename);
@@ -105,10 +131,9 @@
 			//Create multimedia folder if it does not exists
 			if (!is_dir($multimediaPath)) mkdir($multimediaPath, 0755);
 			
-			// remove photos and videos older than 5 minuts
-			$unixCommand = "sudo find ".$multimediaPath." -maxdepth 1 -mmin +5 -type f -name \"*\" -exec rm -f {} \;";
-			shell_exec ($unixCommand);
-
+			// remove photos and videos older than removeOldMultimedia minutes
+			removeOldMultimedia($config['roomberry']['removeOldMultimedia']);
+			
 			if (isVideo($file))
 			{
 				if (file_exists($multimediaPath.explode('.',explode('/',$file)[1])[0].".mp4"))
@@ -118,9 +143,9 @@
 				else if(copy($url."/cam/".$file, $multimediaPath.explode('/',$file)[1]))
 				{
 					// Convert to mp4
-					$unixCommand = "sudo MP4Box -quiet -add ". $multimediaPath.explode('/',$file)[1]. " ".$multimediaPath.explode('.',explode('/',$file)[1])[0].".mp4". " 2>&1";;
+					$unixCommand = "MP4Box -quiet -add ". $multimediaPath.explode('/',$file)[1]. " ".$multimediaPath.explode('.',explode('/',$file)[1])[0].".mp4". " 2>&1";;
 					shell_exec ($unixCommand);
-					
+										
 					// Delete h264 file
 					unlink($multimediaPath.explode('/',$file)[1]);
 
