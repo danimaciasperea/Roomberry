@@ -272,7 +272,7 @@ class RoomberryHandler(BaseHTTPRequestHandler):
            remove(PATH_TO_WWW + PATH_TO_MEDIA_XML)
         
         media_dictionary = {}
-        for dirpath, dirs, files in walk(PATH_TO_MEDIA):            
+        for dirpath, dirs, files in walk(PATH_TO_MEDIA + '/' + PATH_TO_CAM):            
             if files:
                 media_dictionary[dirpath] = sorted(files, reverse=True) 
         
